@@ -98,6 +98,21 @@
              
             </ul>
           </li>
+          @if(Session::get('page')=="subadmins")
+            @php $active="active" @endphp
+          
+          @else
+            @php $active = "" @endphp
+          @endif
+          
+          <li class="nav-item">
+            <a href="{{url('admin/subadmins')}}" class="nav-link {{$active}}">
+              <i class="far fa-circle nav-icon"></i>
+              <p>
+                Subadmins
+              </p>
+            </a>
+          </li>
 
           @if(Session::get('page')=="cms-pages")
             @php $active="active" @endphp
@@ -113,8 +128,8 @@
                 CMS Pages
               </p>
             </a>
-            
           </li>
+
           <li class="nav-item">
             <a href="#" class="nav-link">
               <i class="nav-icon fas fa-chart-pie"></i>

@@ -7,12 +7,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1 class="m-0">CMS Pages</h1>
+                        <h1 class="m-0">Sub Admins</h1>
                     </div><!-- /.col -->
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="#">Home</a></li>
-                            <li class="breadcrumb-item active">CMS Pages</li>
+                            <li class="breadcrumb-item active">Sub Admins</li>
                         </ol>
                     </div><!-- /.col -->
                 </div><!-- /.row -->
@@ -35,49 +35,35 @@
                         @endif
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">CMS Pages</h3>
+                                <h3 class="card-title">Sub Admins</h3>
                                 <a style="max-width: 150px; float:right; display: inline-block"
-                                    href="{{ url('admin/add-edit-cms-page') }}" class="btn btn-block btn-primary">Add Cms
-                                    Page</a>
+                                    href="{{ url('admin/add-edit-subadmin') }}" class="btn btn-block btn-primary">Add Sub Amdin
+                                    </a>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
-                                <table id="cmspages" class="table table-bordered table-striped">
+                                <table id="subadmins" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
                                             <th>ID</th>
-                                            <th>Title</th>
-                                            <th>URL</th>
-                                            <th>Created on</th>
+                                            <th>Name</th>
+                                            <th>Mobile</th>
+                                            <th>Email</th>
+                                            <th>Type</th>
                                             <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($CmsPages as $page)
+                                        @foreach ($subadmins as $subadmin)
                                             <tr>
-                                                <td>{{ $page['id'] }}</td>
-                                                <td>{{ $page['title'] }}</td>
-                                                <td>{{ $page['url'] }}</td>
-                                                <td>{{ date('F j, Y, g:i a', strtotime($page['created_at'])) }}</td>
+                                                <td>{{ $subadmin->id }}</td>
+                                                <td>{{ $subadmin->name }}</td>
+                                                <td>{{ $subadmin->mobile }}</td>
+                                                <td>{{ $subadmin->email }}</td>
+                                                <td>{{ $subadmin->type  }}</td>
+                                                <td>{{ date('F j, Y, g:i a', strtotime($subadmin->created_at));}}</td>
                                                 <td>
 
-                                                    @if ($page['status'] == 1)
-                                                        <a class="updateCmsPageStatus" id="page-{{ $page['id'] }}"
-                                                            page_id="{{ $page['id'] }}" href="javascript:void(0)"
-                                                            style='color:blue'><i class="fas fa-toggle-on"
-                                                                status="Active"></i></a>
-                                                    @else
-                                                        <a class="updateCmsPageStatus" id="page-{{ $page['id'] }}"
-                                                            page_id="{{ $page['id'] }}" href="javascript:void(0)"
-                                                            style="color: gray"><i class="fas fa-toggle-off"
-                                                                status="Inactive"></i></a>
-                                                    @endif
-                                                    &nbsp;&nbsp;
-                                                    <a style='color:blue'
-                                                        href="{{ url('admin/add-edit-cms-page/' . $page['id']) }}"><i
-                                                            class="fas fa-edit"></i></a>
-                                                    &nbsp;&nbsp;
-                                                    <a class="confirmDelete" name="CMS Page" title="Delete Cms Page" style='color:blue' href="javascript:void(0)" record="cms-page" recordid="{{ $page['id'] }}" <?php /* href="{{ url('admin/delete-cms-page/' . $page['id']) }}" */?> ><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
