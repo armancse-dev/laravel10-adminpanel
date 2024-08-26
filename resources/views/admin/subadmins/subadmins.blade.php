@@ -63,7 +63,23 @@
                                                 <td>{{ $subadmin->type  }}</td>
                                                 <td>{{ date('F j, Y, g:i a', strtotime($subadmin->created_at));}}</td>
                                                 <td>
-
+                                                    @if ($subadmin->status == 1)
+                                                    <a class="updateSubadminStatus" id="subadmin-{{ $subadmin->id }}"
+                                                        subadmin_id="{{ $subadmin->id }}" href="javascript:void(0)"
+                                                        style='color:blue'><i class="fas fa-toggle-on"
+                                                            status="Active"></i></a>
+                                                    @else
+                                                    <a class="updateSubadminStatus" id="subadmin-{{ $subadmin->id }}"
+                                                        subadmin_id="{{ $subadmin->id }}" href="javascript:void(0)"
+                                                        style="color: gray"><i class="fas fa-toggle-off"
+                                                            status="Inactive"></i></a>
+                                                    @endif
+                                                    &nbsp;&nbsp;
+                                                    {{-- <a style='color:blue'
+                                                    href="{{ url('admin/add-edit-subadmin/' . $subadmin->id) }}"><i
+                                                        class="fas fa-edit"></i></a>
+                                                    &nbsp;&nbsp; --}}
+                                                    <a class="confirmDelete" name="Subadmins" title="Delete Subadmins" style='color:blue' href="javascript:void(0)" record="subadmin" recordid="{{ $subadmin->id }}" <?php /* href="{{ url('admin/delete-subadmin/' . $subadmin->id) }}" */?> ><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
                                         @endforeach
