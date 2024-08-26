@@ -170,4 +170,55 @@ class AdminController extends Controller
         return redirect()->back()->with('success_message', 'Subadmin Delete Sucessfully');
     }
 
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function addEditSubAdmin(Request $request,$id=null)
+    {
+        Session::put('page','subadmin');
+        if($id==""){
+            $title = "Add Subadmin";
+            $subadmindata = new Admin;
+            $message = "Subadmin added successfully";
+        }else{
+            $title = "Edit Subadmin";
+            $subadmindata = Admin::find($id);
+            $message = "Subadmin Updated successfully";
+        }
+
+        if($request->isMethod('post')){
+            $data = $request->all();
+            // echo "<pre>"; print_r($data); die;
+
+            $rules = [
+                'title' => 'required',
+                'name' => 'required',
+                'email' => 'required',
+                'mobile' => 'required',
+                'password' => 'required'
+            ];
+            $customMessages = [
+                'title.required' => 'Title is Required',
+                'name.required' => 'Name is Required',
+                'email.required' => 'Email is Required',
+                'mobile.required' => 'Mobile is Required',
+                'password.required' => 'Password is Required'
+            ];
+            $this->validate($request,$rules,$customMessages);
+            $subadmin->title = $data['title'];
+            $subadmin->name = $data['name'];
+            $subadmin->email = $data['email'];
+            $subadmin->mobile = $data['mobile'];
+            $subadmin->password = $data['password'];
+            $subadmin->status = 1;
+            $subadmin->save();
+            return redirect('admin/subadmin')->with('success_message', $message);
+        }
+        return view('admin.subadmins.add_edit_subadmin')->with(compact('title','subadmindata'));
+
+    }
+
 }
