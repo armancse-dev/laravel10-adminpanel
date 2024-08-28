@@ -75,10 +75,10 @@
                                                             status="Inactive"></i></a>
                                                     @endif
                                                     &nbsp;&nbsp;
-                                                    {{-- <a style='color:blue'
+                                                    <a style='color:blue'
                                                     href="{{ url('admin/add-edit-subadmin/' . $subadmin->id) }}"><i
                                                         class="fas fa-edit"></i></a>
-                                                    &nbsp;&nbsp; --}}
+                                                    &nbsp;&nbsp;
                                                     <a class="confirmDelete" name="Subadmins" title="Delete Subadmins" style='color:blue' href="javascript:void(0)" record="subadmin" recordid="{{ $subadmin->id }}" <?php /* href="{{ url('admin/delete-subadmin/' . $subadmin->id) }}" */?> ><i class="fas fa-trash"></i></a>
                                                 </td>
                                             </tr>
