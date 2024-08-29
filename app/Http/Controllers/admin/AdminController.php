@@ -39,8 +39,8 @@ class AdminController extends Controller
             if(Auth::guard('admin')->attempt(['email' => $data['email'], 'password' => $data['password']])){
                 //Remember Admin email and password
                 if(isset($data['remember'])&&!empty($data['remember'])){
-                    setcookies("email",$data['email'],time()+3600);
-                    setcookies("password",$data['password'],time()+3600);
+                    setcookie("email",$data['email'],time()+3600);
+                    setcookie("password",$data['password'],time()+3600);
                 }else{
                     setcookie("email","");
                     setcookie("password","");
@@ -245,6 +245,22 @@ class AdminController extends Controller
             return redirect('admin/subadmins')->with('success_message', $message);
         }
         return view('admin.subadmins.add_edit_subadmin')->with(compact('title','subadmindata'));
+
+    }
+
+    // public function deleteSubadmin($id){
+    //     // Detele Sub Admin
+    //     Admin::where('id',$id)->delete();
+    //     return redirect()->back()->with('sucess_message', 'Subadmin deleted successfully !');
+    // }
+
+    public function updateRole($id,Request $request) {
+        $title = "Update Subadmin Roles/Permission";
+        if($request->isMethod('post')){
+            $data = $request->all();
+            echo "<pre>"; print_r($data); die;
+        }
+        return view('admin.subadmins.update_roles')->with(compact('title','id'));
 
     }
 
