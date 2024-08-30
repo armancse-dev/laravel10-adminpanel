@@ -258,7 +258,6 @@ class AdminController extends Controller
     // }
 
     public function updateRole($id,Request $request) {
-        $title = "Update Subadmin Roles/Permission";
         if($request->isMethod('post')){
             $data = $request->all();
             // echo "<pre>"; print_r($data); die;
@@ -266,38 +265,62 @@ class AdminController extends Controller
             // Delete all earlier roles
             AdminsRole::where('subadmin_id', $id)->delete();
 
-            // Add New role for subadmin
-            if(isset($data['cms_pages']['view'])){
-                $cms_pages_view = $data['cms_pages']['view'];
-            }else{
-                $cms_pages_view = 0;
+            // Add New role for subadmin static
+            // if(isset($data['cms_pages']['view'])){
+            //     $cms_pages_view = $data['cms_pages']['view'];
+            // }else{
+            //     $cms_pages_view = 0;
+            // }
+
+            // if(isset($data['cms_pages']['edit'])){
+            //     $cms_pages_edit = $data['cms_pages']['edit'];
+            // }else{
+            //     $cms_pages_edit = 0;
+            // }
+
+            // if(isset($data['cms_pages']['full'])){
+            //     $cms_pages_full = $data['cms_pages']['full'];
+            // }else{
+            //     $cms_pages_full = 0;
+            // }
+
+             // Add New role for subadmin Dynamically
+            foreach($data as $key => $value){
+                if(isset($value['view'])){
+                    $view = $value['view'];
+                }else{
+                    $view = 0;
+                }
+
+                if(isset($value['edit'])){
+                    $edit = $value['edit'];
+                }else{
+                    $edit = 0;
+                }
+
+                if(isset($value['full'])){
+                    $full = $value['full'];
+                }else{
+                    $full = 0;
+                }
             }
 
-            if(isset($data['cms_pages']['edit'])){
-                $cms_pages_edit = $data['cms_pages']['edit'];
-            }else{
-                $cms_pages_edit = 0;
-            }
-
-            if(isset($data['cms_pages']['full'])){
-                $cms_pages_full = $data['cms_pages']['full'];
-            }else{
-                $cms_pages_full = 0;
-            }
 
             $role = new AdminsRole;
             $role->subadmin_id = $id;
-            $role->module = 'cms_pages';
-            $role->view_access = $cms_pages_vie;
-            $role->edit_access = $cms_pages_edit;
-            $role->full_access = $cms_pages_full;
+            $role->module = $key;
+            $role->view_access = $view;
+            $role->edit_access = $edit;
+            $role->full_access = $full;
             $role->save();
-
+            
             $message = "Subadmin Roles Update Sucessfully !";
             return redirect()->back()->with('success_message',$message);
         }
 
         $subadminRoles = AdminsRole::where('subadmin_id',$id)->get()->toArray();
+        $subadminDetails = Admin::where('id',$id)->first()->toArray();
+        $title = "Update ".$subadminDetails['name']." Roles/Permissions";
 
 
         return view('admin.subadmins.update_roles')->with(compact('title','id','subadminRoles'));
