@@ -58,8 +58,44 @@
                                     </div>
                                 @endif
 
+                                @if (Session::has('success_message'))
+                                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                                        <strong>Success:</strong> {{ Session::get('success_message') }}
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+                                        </button>
+                                    </div>
+                                @endif
+
                                 <form name="subadminForm" id="subadminForm" action="{{ url('admin/update-role/'.$id) }}" method="post">@csrf
                                     <input type="hidden" name="subadmin_id" value="{{ $id }}" id="">
+                                    
+                                    @if(!empty($subadminRoles))
+                                        @foreach($subadminRoles as $role)
+                                            @if($role['module'] == "cms_pages")
+                                                if($role['view_access']==1)
+                                                    @php $viewCMSPages = "checked" @endphp
+                                                @else
+                                                    @php $viewCMSPages = "" @endphp
+                                                @endif
+
+                                                if($role['edit_access']==1)
+                                                    @php $editCMSPages = "checked" @endphp
+                                                @else
+                                                    @php $editCMSPages = "" @endphp
+                                                @endif
+
+
+                                                if($role['full_access']==1)
+                                                    @php $fullCMSPages = "checked" @endphp
+                                                @else
+                                                    @php $fullCMSPages = "" @endphp
+                                                @endif
+                                            @endif
+                                        @endforeach
+
+                                    @endif
+
                                     <div class="card-body">
                                         {{-- <div class="form-group col-md-6">
                                             <label for="email">Email*</label>
@@ -67,9 +103,9 @@
                                         </div> --}}
                                         <div class="form-group col-md-6">
                                             <label for="cms_pages">CMS Pages&nbsp;&nbsp;</label>
-                                            <input type="checkbox" name="cms_pages[view]" value="1" > View Access &nbsp;&nbsp;
-                                            <input type="checkbox" name="cms_pages[edit]" value="1">View/ Access &nbsp;&nbsp;
-                                            <input type="checkbox"  name="cms_pages[full]" value="1">View Access &nbsp;&nbsp;
+                                            <input type="checkbox" name="cms_pages[view]" value="1" @if(isset($viewCMSPages)) {{$viewCMSPages}} @endif > View Access &nbsp;&nbsp;
+                                            <input type="checkbox" name="cms_pages[edit]" value="1" @if(isset($editCMSPages)) {{$editCMSPages}} @endif>View/Edit Access &nbsp;&nbsp;
+                                            <input type="checkbox"  name="cms_pages[full]" value="1" @if(isset($fullCMSPages)) {{$fullCMSPages}} @endif>Full Access &nbsp;&nbsp;
                                         </div>
                                     </div>
                                     <!-- /.card-body -->

@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Auth;
 use App\Models\Admin;
+use App\Models\AdminsRole;
 use Illuminate\Support\Facades\Hash;
 use Validator;
 use Image;
@@ -159,16 +160,7 @@ class AdminController extends Controller
         }
     }
 
-    /**
-     * Remove the specified resource from storage.
-     * @return \Illuminate\Http\Response
-     */
-    public function deleteSubadmin($id)
-    {
-        //Delete Sub Admin
-        Admin::where('id',$id)->delete();
-        return redirect()->back()->with('success_message', 'Subadmin Delete Sucessfully');
-    }
+   
 
 
     /**
@@ -248,6 +240,17 @@ class AdminController extends Controller
 
     }
 
+     /**
+     * Remove the specified resource from storage.
+     * @return \Illuminate\Http\Response
+     */
+    public function deleteSubadmin($id)
+    {
+        //Delete Sub Admin
+        Admin::where('id',$id)->delete();
+        return redirect()->back()->with('success_message', 'Subadmin Delete Sucessfully');
+    }
+
     // public function deleteSubadmin($id){
     //     // Detele Sub Admin
     //     Admin::where('id',$id)->delete();
@@ -258,9 +261,46 @@ class AdminController extends Controller
         $title = "Update Subadmin Roles/Permission";
         if($request->isMethod('post')){
             $data = $request->all();
-            echo "<pre>"; print_r($data); die;
+            // echo "<pre>"; print_r($data); die;
+
+            // Delete all earlier roles
+            AdminsRole::where('subadmin_id', $id)->delete();
+
+            // Add New role for subadmin
+            if(isset($data['cms_pages']['view'])){
+                $cms_pages_view = $data['cms_pages']['view'];
+            }else{
+                $cms_pages_view = 0;
+            }
+
+            if(isset($data['cms_pages']['edit'])){
+                $cms_pages_edit = $data['cms_pages']['edit'];
+            }else{
+                $cms_pages_edit = 0;
+            }
+
+            if(isset($data['cms_pages']['full'])){
+                $cms_pages_full = $data['cms_pages']['full'];
+            }else{
+                $cms_pages_full = 0;
+            }
+
+            $role = new AdminsRole;
+            $role->subadmin_id = $id;
+            $role->module = 'cms_pages';
+            $role->view_access = $cms_pages_vie;
+            $role->edit_access = $cms_pages_edit;
+            $role->full_access = $cms_pages_full;
+            $role->save();
+
+            $message = "Subadmin Roles Update Sucessfully !";
+            return redirect()->back()->with('success_message',$message);
         }
-        return view('admin.subadmins.update_roles')->with(compact('title','id'));
+
+        $subadminRoles = AdminsRole::where('subadmin_id',$id)->get()->toArray();
+
+
+        return view('admin.subadmins.update_roles')->with(compact('title','id','subadminRoles'));
 
     }
 
