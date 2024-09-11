@@ -45,7 +45,7 @@
                                 <table id="cmspages" class="table table-bordered table-striped">
                                     <thead>
                                         <tr>
-                                            <th>ID</th>
+                                            <th>ID/th>
                                             <th>Title</th>
                                             <th>URL</th>
                                             <th>Created on</th>
